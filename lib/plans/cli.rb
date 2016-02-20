@@ -4,6 +4,7 @@ require 'plans/list'
 require 'plans/init'
 require 'plans/publish'
 require 'plans/thumbs'
+require 'plans/pdf'
 
 module Plans
   class CLI < Thor
@@ -112,6 +113,30 @@ module Plans
 
     def thumbs(path = '.')
       Thumbs.new(shell, options).do(path)
+    end
+
+
+    desc 'pdf', 'Create an PDF version of the document'
+    long_desc <<-PDF
+    `plans pdf` will create a PDF version of the document.
+
+    The document type is determined by inspecting the template.yml.
+
+    Overwrites any previously published versions of the PDF document.
+
+    > $ plans pdf
+    PDF
+    method_option :toc,
+                  {:type => :boolean,
+                   :default => false,
+                   :desc => 'Add a table of contents to the PDF document. Not included by default.'}
+    method_option :open,
+                  {:type => :boolean,
+                   :default => true,
+                   :desc => 'Open the published document after it has been rendered by Pandoc.'}
+
+    def pdf (path = '.')
+      Pdf.new(shell, options).do(path)
     end
 
   end

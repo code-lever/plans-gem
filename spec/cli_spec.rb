@@ -8,9 +8,9 @@ describe Plans::CLI, type: :aruba do
 
   before(:all) do
     # Enable these to have aruba print this information as the specs run.
-    # announcer.activate(:command)
-    # announcer.activate(:stdout)
-    # announcer.activate(:stderr)
+    # aruba.announcer.activate(:command)
+    # aruba.announcer.activate(:stdout)
+    # aruba.announcer.activate(:stderr)
   end
 
   describe '#init' do
@@ -144,5 +144,24 @@ describe Plans::CLI, type: :aruba do
 
   end
 
+  describe '#pdf' do
+    before :each do
+      run_simple 'plans init --plans-path=./tmp'
+      run_simple 'plans new scope --plans-path=./tmp'
+    end
+
+    it 'creates a PDF document in the publish sub directory' do
+      run_simple 'plans pdf ./scope --no-open --plans-path=./tmp'
+      expect(last_command_started).to have_output /scope published/
+      expect('./scope/publish/scope.pdf').to be_an_existing_file
+    end
+
+    it 'fails if the plans directory does not exist' do
+      run 'plans publish ./scope --no-open --plans-path=./not_valid_tmp'
+      expect(last_command_started).to_not be_successfully_executed
+      expect(last_command_started).to have_output /The .plans directory does not exist./
+    end
+
+  end
 end
 
