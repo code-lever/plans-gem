@@ -136,6 +136,12 @@ describe Plans::CLI, type: :aruba do
       expect('./scope/publish/scope.docx').to be_an_existing_file
     end
 
+    it 'creates a word document with TOC' do
+      run_simple 'plans publish ./scope --toc --no-open --plans-path=./tmp'
+      expect(last_command_started).to have_output /scope published/
+      expect('./scope/publish/scope.docx').to be_an_existing_file
+    end
+
     it 'fails if the plans directory does not exist' do
       run 'plans publish ./scope --no-open --plans-path=./not_valid_tmp'
       expect(last_command_started).to_not be_successfully_executed
@@ -152,6 +158,12 @@ describe Plans::CLI, type: :aruba do
 
     it 'creates a PDF document in the publish sub directory' do
       run_simple 'plans pdf ./scope --no-open --plans-path=./tmp'
+      expect(last_command_started).to have_output /scope published/
+      expect('./scope/publish/scope.pdf').to be_an_existing_file
+    end
+
+    it 'creates a PDF document with TOC' do
+      run_simple 'plans pdf ./scope --toc --no-open --plans-path=./tmp'
       expect(last_command_started).to have_output /scope published/
       expect('./scope/publish/scope.pdf').to be_an_existing_file
     end
