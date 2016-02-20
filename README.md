@@ -34,6 +34,10 @@ ImageMagick works pretty much the same way.
 
 You also need Microsoft Word. :)
 
+Plans can also create PDFs. If you want to create PDFs of your markdown documents you will need to install a XeLaTeX engine for use by Pandoc. [BasicTex](https://tug.org/mactex/morepackages.html) will work. You can also install this with homebrew.
+
+    $ brew install Caskroom/cask/basictex
+
 ## Installation
 
 Install it:
